@@ -169,6 +169,7 @@ public class AdminDataStore {
 
     public Admin loginAdmin (String username, String password) {
         Admin admin = null;
+        
         try {
             findAdmin.setString(1, username);
             resultSet = findAdmin.executeQuery();
