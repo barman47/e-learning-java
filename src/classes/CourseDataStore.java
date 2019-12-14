@@ -1,29 +1,34 @@
 package classes;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import sample.CustomAlert;
 
 import java.sql.*;
+import java.util.ArrayList;
 
-public class AdminDataStore {
+public class CourseDataStore {
     public static final String DB_NAME = "elearning.db";
     public static final String CONNECTION_STRING = "jdbc:sqlite:C:\\databases\\" + DB_NAME;
 
-    // Admin Database
-    public static final String TABLE_ADMIN = "admins";
-    public static final String COLUMN_ADMIN_ID = "id";
-    public static final String COLUMN_ADMIN_NAME = "name";
-    public static final String COLUMN_ADMIN_USERNAME = "username";
-    public static final String COLUMN_ADMIN_PASSWORD = "password";
-    public static final String CREATE_ADMIN_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_ADMIN  +
-            " (" + COLUMN_ADMIN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            COLUMN_ADMIN_NAME + " TEXT NOT NULL, " +
-            COLUMN_ADMIN_USERNAME + " TEXT NOT NULL, " +
-            COLUMN_ADMIN_PASSWORD + " TEXT NOT NULL);";
-    // Create admin
-    public static final String INSERT_ADMIN = "INSERT INTO " + TABLE_ADMIN + "(" + COLUMN_ADMIN_NAME + ", " +
-            COLUMN_ADMIN_USERNAME + "," + COLUMN_ADMIN_PASSWORD + ") VALUES(?, ?, ?)";
-    private static final String FIND_ADMIN = "SELECT *  FROM " + TABLE_ADMIN + " WHERE " + COLUMN_ADMIN_USERNAME + " = ?;";
+    // Course Database
+    public static final String TABLE_COURSE = "courses";
+    public static final String COLUMN_COURSE_ID = "id";
+    public static final String COLUMN_STUDENTS = "students";
+    public static final String COLUMN_COURSE_TITLE = "title";
+    public static final String COLUMN_COURSE_URL = "url";
+    public static final String CREATE_COURSE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_COURSE  +
+            " (" + COLUMN_COURSE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            COLUMN_STUDENTS + " TEXT, " +
+            COLUMN_COURSE_URL +  " TEXT NOT NULL, " +
+            COLUMN_COURSE_TITLE + " TEXT NOT NULL);";
+    // Create course
+    public static final String INSERT_COURSE = "INSERT INTO " + TABLE_COURSE + "(" + COLUMN_COURSE_TITLE + ", " + COLUMN_COURSE_URL + ") VALUES(?, ?)";
+
+    private static final String FIND_COURSE = "SELECT *  FROM " + TABLE_COURSE + " WHERE " + COLUMN_COURSE_TITLE + " = ?;";
+
+    private static final String FIND_COURSES = "SELECT *  FROM " + TABLE_COURSE + ";";
 
     // TEACHER DATABASE
 //    public static final String TABLE_TEACHER = "teachers";
@@ -33,16 +38,16 @@ public class AdminDataStore {
     private Statement statement;
     private ResultSet resultSet;
 
-    private PreparedStatement insertAdmin;
-    private PreparedStatement findAdmin;
+    private PreparedStatement insertCourse;
+    private PreparedStatement findCourse;
 
     public boolean open () {
         try {
             conn = DriverManager.getConnection(CONNECTION_STRING);
-            // creating the admin table
-            createAdminTable(); // Must come before insert, otherwise there may be no table to insert into
-            findAdmin = conn.prepareStatement(FIND_ADMIN);
-            insertAdmin = conn.prepareStatement(INSERT_ADMIN);
+            // creating the course table
+            createCourseTable(); // Must come before insert, otherwise there may be no table to insert into
+            findCourse = conn.prepareStatement(FIND_COURSE);
+            insertCourse = conn.prepareStatement(INSERT_COURSE);
             return true;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -119,73 +124,76 @@ public class AdminDataStore {
         }
     }
 
-    private void createAdminTable () {
+    private void createCourseTable () {
         try {
             statement = conn.createStatement();
-            statement.execute(CREATE_ADMIN_TABLE);
+            statement.execute(CREATE_COURSE_TABLE);
         } catch (SQLException ex) {
-            CustomAlert.showAlert(Alert.AlertType.ERROR, "Error", "ERROR CREATING ADMIN TABLE", "Please try again!");
+            CustomAlert.showAlert(Alert.AlertType.ERROR, "Error", "ERROR CREATING COURSE TABLE", "Please try again!");
         }
     }
 
-    public String insertAdmin (String name, String username, String password){
+    public String insertCourse (String courseTitle, String fileUrl){
         String returnMessage = "";
         try {
-            boolean adminExists = findAdmin(username);
-            if (adminExists) {
-                returnMessage = "Username exists!";
+            Course course = findCourse(courseTitle);
+            if (course != null) {
+                returnMessage = "Course already exists!";
             } else {
                 open();
-                insertAdmin.setString(1, name);
-                insertAdmin.setString(2, username);
-                insertAdmin.setString(3, password);
-                insertAdmin.execute();
+                insertCourse.setString(1, courseTitle);
+                insertCourse.setString(2, fileUrl);
+                insertCourse.execute();
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            CustomAlert.showAlert(Alert.AlertType.ERROR, "Error", "ERROR INSERTING ADMIN", "Please try again!");
+            CustomAlert.showAlert(Alert.AlertType.ERROR, "Error", "ERROR INSERTING COURSE", "Please try again!");
         }
 
         return returnMessage;
     }
 
-    public boolean findAdmin (String username) {
-        boolean admin = false;
+    public Course findCourse (String courseTitle) {
+        Course course = new Course();
         ResultSet resultSet = null;
         try {
-            findAdmin.setString(1, username);
-            resultSet = findAdmin.executeQuery();
+            findCourse.setString(1, courseTitle);
+            resultSet = findCourse.executeQuery();
             if (resultSet.next()) {
-                admin = true;
+                while (resultSet.next()) {
+                    course.setId(resultSet.getInt("id"));
+                    course.setCourseUrl(resultSet.getString("url"));
+                    course.setTitle(resultSet.getString("title"));
+                    break;
+                }
+            } else {
+                CustomAlert.showAlert(Alert.AlertType.INFORMATION, "Course not Found", "Course Does not Exist!", "Please try again!");
+                course = null;
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
             CustomAlert.showAlert(Alert.AlertType.ERROR, "Error", "ERROR EXECUTING QUERY", "Please try again!");
         } finally {
-            close(conn, findAdmin, resultSet);
+            close(conn, findCourse, resultSet);
         }
-        return admin;
+        return course;
     }
 
-    public Admin loginAdmin (String username, String password) {
-        Admin admin = null;
-
+    public ArrayList<Course> getCourses () {
+        ArrayList<Course> courses = new ArrayList<>();
         try {
-            findAdmin.setString(1, username);
-            resultSet = findAdmin.executeQuery();
-            if (resultSet.next()) {
-                admin = new Admin(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("username"), resultSet.getString("password"));
-                if (!password.equals(admin.getPassword())) {
-                    CustomAlert.showAlert(Alert.AlertType.WARNING, "Password Incorrect", "INCORRECT ADMIN PASSWORD!", "The Password provided is incorrect");
-                }
-            } else {
-                CustomAlert.showAlert(Alert.AlertType.WARNING, "Admin not Found", "ADMIN DOES NOT EXIST!", "Admin username does not exist");
+            statement = conn.createStatement();
+            resultSet = statement.executeQuery(FIND_COURSES);
+
+            while (resultSet.next()) {
+                courses.add(new Course(resultSet.getInt("id"), resultSet.getString("students"), resultSet.getString("url"), resultSet.getString("title")));
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
+            CustomAlert.showAlert(Alert.AlertType.ERROR, "Error", "ERROR FETCHING COURSES", "Please try again!");
         } finally {
             close(conn, statement, resultSet);
         }
-        return admin;
+        return courses;
     }
 }

@@ -1,7 +1,7 @@
 package sample;
 
-import classes.Admin;
-import classes.AdminDataStore;
+import classes.*;
+import controllers.StudentDashboard;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -72,27 +72,22 @@ public class HomeController {
     private Button studentLoginButton;
 
     @FXML
-    public void intialize () {
-
+    public void handleAdminLogin (ActionEvent e) throws IOException {
+        handleLogin(adminUsername, adminPassword, "admin", e);
     }
 
     @FXML
-    public void handleAdminLogin () {
-        handleLogin(adminUsername, adminPassword, "admin");
+    public void handleTeacherLogin (ActionEvent e) throws IOException {
+        handleLogin(teacherUsername, teacherPassword, "teacher", e);
     }
 
     @FXML
-    public void handleTeacherLogin () {
-        handleLogin(teacherUsername, teacherPassword, "teacher");
-    }
-
-    @FXML
-    public void handleStudentLogin () {
-        handleLogin(studentUsername, studentPassword, "student");
+    public void handleStudentLogin (ActionEvent e) throws IOException {
+        handleLogin(studentUsername, studentPassword, "student", e);
     }
 
     // Handle user login
-    private void handleLogin (TextField username, PasswordField password, String useCase) {
+    private void handleLogin (TextField username, PasswordField password, String useCase, ActionEvent e) throws IOException {
         String errorTitle = "LOGIN ERROR";
         String errorHeader = "Invalid Login Details";
         String errorMessage= "Username and Password are required!";
@@ -126,15 +121,15 @@ public class HomeController {
                     // Query and login admin
                     Admin admin = adminDataStore.loginAdmin(username.getText(), password.getText());
                     if (admin != null) {
-                        if (admin.getPassword() == password.getText()) {
+                        if (admin.getPassword().equals(password.getText())) {
                             adminUsernameError.setText("");
                             adminPasswordError.setText("");
-                            System.out.println("Passwords match");
+
+                            // Show Admin Dashboard
+                            showDashboardPage(e, "admin");
                         } else {
                             adminPasswordError.setText("Password Incorrect!");
                             adminPassword.requestFocus();
-
-                            // Show Admin Dashboard
                         }
                     } else {
                         adminUsernameError.setText("Admin not found!");
@@ -149,6 +144,7 @@ public class HomeController {
                     studentUsernameError.setText("Student Username is required!");
                     isValid = false;
                 } else {
+                    studentUsernameError.setText("");
                     isValid = true;
                 }
 
@@ -156,15 +152,32 @@ public class HomeController {
                     studentPasswordError.setText("Student Password is required!");
                     isValid = false;
                 } else {
+                    studentPasswordError.setText("");
                     isValid = true;
                 }
 
                 if (!isValid) {
                     CustomAlert.showAlert(Alert.AlertType.ERROR, errorTitle, errorHeader, errorMessage);
                 } else {
-                    studentUsernameError.setText("");
-                    studentPasswordError.setText("");
-                    CustomAlert.showAlert(Alert.AlertType.CONFIRMATION, "LOGIN SUCCESSFUL", "Login Succeeded", "Admin Logged In");
+                    StudentDataStore studentDataStore = new StudentDataStore();
+                    studentDataStore.open();
+                    // Query and login teacher
+                    Student student = studentDataStore.loginStudent(username.getText(), password.getText());
+                    if (student != null) {
+                        if (student.getPassword().equals(password.getText())) {
+                            studentUsernameError.setText("");
+                            studentPasswordError.setText("");
+
+                            // Show Student Dashboard
+                            showDashboardPage(e, "student");
+                        } else {
+                            studentPasswordError.setText("Password Incorrect!");
+                            studentPassword.requestFocus();
+                        }
+                    } else {
+                        studentUsernameError.setText("Student not found!");
+                        studentUsername.requestFocus();
+                    }
                 }
                 break;
 
@@ -174,6 +187,7 @@ public class HomeController {
                     teacherUsernameError.setText("Teacher Username is required!");
                     isValid = false;
                 } else {
+                    teacherUsernameError.setText("");
                     isValid = true;
                 }
 
@@ -181,15 +195,32 @@ public class HomeController {
                     teacherPasswordError.setText("Teacher Password is required!");
                     isValid = false;
                 } else {
+                    teacherPasswordError.setText("");
                     isValid = true;
                 }
 
                 if (!isValid) {
                     CustomAlert.showAlert(Alert.AlertType.ERROR, errorTitle, errorHeader, errorMessage);
                 } else {
-                    teacherUsernameError.setText("");
-                    teacherPasswordError.setText("");
-                    CustomAlert.showAlert(Alert.AlertType.CONFIRMATION, "LOGIN SUCCESSFUL", "Login Succeeded", "Admin Logged In");
+                    TeacherDataStore teacherDataStore = new TeacherDataStore();
+                    teacherDataStore.open();
+                    // Query and login teacher
+                    Teacher teacher = teacherDataStore.loginTeacher(username.getText(), password.getText());
+                    if (teacher != null) {
+                        if (teacher.getPassword().equals(password.getText())) {
+                            teacherUsernameError.setText("");
+                            teacherPasswordError.setText("");
+
+                            // Show Teacher Dashboard
+                            showDashboardPage(e, "teacher");
+                        } else {
+                            teacherPasswordError.setText("Password Incorrect!");
+                            teacherPassword.requestFocus();
+                        }
+                    } else {
+                        teacherUsernameError.setText("Teacher not found!");
+                        teacherUsername.requestFocus();
+                    }
                 }
                 break;
             }
@@ -228,21 +259,19 @@ public class HomeController {
                 adminRegisterStage.setScene(registerScene);
                 adminRegisterStage.setTitle("Register New Admin");
                 adminRegisterStage.setResizable(false);
-//                adminRegisterStage.setMaximized(true);
                 adminRegisterStage.centerOnScreen();
                 adminRegisterStage.show();
                 break;
 
             case "student":
                 root = FXMLLoader.load(getClass().getResource("../views/registerStudent.fxml"));
-                registerScene = new Scene(root, 663, 467);
+                registerScene = new Scene(root, 750, 467);
                 registerStage = (Stage) ((Node)e.getSource()).getScene().getWindow();
                 registerStage.hide();
                 Stage studentRegisterStage = registerStage;
                 studentRegisterStage.setScene(registerScene);
                 studentRegisterStage.setTitle("Register New Student");
                 studentRegisterStage.setResizable(false);
-//                adminRegisterStage.setMaximized(true);
                 studentRegisterStage.centerOnScreen();
                 studentRegisterStage.show();
                 break;
@@ -256,10 +285,58 @@ public class HomeController {
                 teacherRegisterStage.setScene(registerScene);
                 teacherRegisterStage.setTitle("Register New Teacher");
                 teacherRegisterStage.setResizable(false);
-//                adminRegisterStage.setMaximized(true);
                 teacherRegisterStage.centerOnScreen();
                 teacherRegisterStage.show();
                 break;
+            default:
+                break;
+        }
+    }
+
+    private void showDashboardPage (ActionEvent e, String useCase) throws IOException {
+        Parent root;
+        Scene loginScene;
+        Stage loginStage;
+        switch (useCase) {
+            case "admin":
+                root = FXMLLoader.load(getClass().getResource("../views/adminDashboard.fxml"));
+                loginScene = new Scene(root, 663, 467);
+                loginStage = (Stage) ((Node)e.getSource()).getScene().getWindow();
+                loginStage.hide();
+                Stage adminRegisterStage = loginStage;
+                adminRegisterStage.setScene(loginScene);
+                adminRegisterStage.setTitle("Admin Dashboard");
+                adminRegisterStage.setResizable(false);
+                adminRegisterStage.centerOnScreen();
+                adminRegisterStage.show();
+                break;
+
+            case "student":
+                root = FXMLLoader.load(getClass().getResource("../views/studentDashboard.fxml"));
+                loginScene = new Scene(root, 663, 467);
+                loginStage = (Stage) ((Node)e.getSource()).getScene().getWindow();
+                loginStage.hide();
+                Stage studentRegisterStage = loginStage;
+                studentRegisterStage.setScene(loginScene);
+                studentRegisterStage.setTitle("Student Dashboard");
+                studentRegisterStage.setResizable(false);
+                studentRegisterStage.centerOnScreen();
+                studentRegisterStage.show();
+                break;
+
+            case "teacher":
+                root = FXMLLoader.load(getClass().getResource("../views/teacherDashboard.fxml"));
+                loginScene = new Scene(root, 800, 467);
+                loginStage = (Stage) ((Node)e.getSource()).getScene().getWindow();
+                loginStage.hide();
+                Stage teacherRegisterStage = loginStage;
+                teacherRegisterStage.setScene(loginScene);
+                teacherRegisterStage.setTitle("Teacher Dashboard");
+                teacherRegisterStage.setResizable(false);
+                teacherRegisterStage.centerOnScreen();
+                teacherRegisterStage.show();
+                break;
+
             default:
                 break;
         }

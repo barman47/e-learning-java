@@ -56,8 +56,6 @@ public class RegisterAdmin {
                     adminUsername.setText(null);
                     adminPassword.setText(null);
                 }
-            } else {
-                System.out.println("Admin not valid");
             }
         } catch (NullPointerException ex) {
             ex.printStackTrace();
@@ -100,7 +98,7 @@ public class RegisterAdmin {
     @FXML
     public void handleBackButtonClick (ActionEvent e) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("../sample/home.fxml"));
-        Scene registerScene = new Scene(root, 430, 430);
+        Scene registerScene = new Scene(root, 430, 490);
         Stage registerStage = (Stage) ((Node)e.getSource()).getScene().getWindow();
         registerStage.hide();
         Stage studentRegisterStage = registerStage;

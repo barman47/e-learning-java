@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AdminDashboard">
+    <center>
+        <TabPane tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+            <tabs>
+                <Tab id="adminTab" text="Admin">
+                    <content>
+                        <VBox prefHeight="360.0" prefWidth="430.0" spacing="10.0">
+                            <children>
+                                <Label alignment="CENTER" prefHeight="35.0" prefWidth="306.0" text="Admin Dashboard">
+                                    <padding>
+                                        <Insets bottom="10.0" top="10.0" />
+                                    </padding>
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Label>
+                                <Label layoutX="10.0" text="Admin Username" />
+                                <TextField fx:id="adminUsername" prefHeight="36.0" prefWidth="310.0" promptText="Enter Username" />
+                                <Label fx:id="adminUsernameError" prefHeight="17.0" prefWidth="328.0" textFill="RED">
+                                    <VBox.margin>
+                                        <Insets top="-10.0" />
+                                    </VBox.margin>
+                                </Label>
+                                <Label layoutX="10.0" layoutY="10.0" text="Password" />
+                                <PasswordField fx:id="adminPassword" layoutX="70.0" layoutY="124.0" prefHeight="36.0" prefWidth="310.0" promptText="Enter Password" />
+                                <Label fx:id="adminPasswordError" layoutX="70.0" layoutY="170.0" prefHeight="17.0" prefWidth="328.0" textFill="RED">
+                                    <VBox.margin>
+                                        <Insets top="-10.0" />
+                                    </VBox.margin>
+                                </Label>
+                                <Button fx:id="adminLoginButton" defaultButton="true" prefHeight="25.0" prefWidth="126.0" text="Login">
+                                    <VBox.margin>
+                                        <Insets top="15.0" />
+                                    </VBox.margin>
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                </Button>
+                                <Label text="Not registered? No Problem. " />
+                                <Hyperlink id="a" fx:id="registerAdminLink" text="Register Admin" />
+                            </children>
+                            <padding>
+                                <Insets left="60.0" right="60.0" top="30.0" />
+                            </padding>
+                        </VBox>
+                    </content>
+                </Tab>
+                <Tab id="studentTab" text="Student">
+                    <content>
+                        <VBox spacing="10.0">
+                            <children>
+                                <Label alignment="CENTER" prefHeight="35.0" prefWidth="306.0" text="Student Login">
+                                    <padding>
+                                        <Insets bottom="10.0" top="10.0" />
+                                    </padding>
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Label>
+                                <Label layoutX="10.0" text="Student Username" />
+                                <TextField fx:id="studentUsername" prefHeight="36.0" prefWidth="310.0" promptText="Enter Username" />
+                                <Label fx:id="studentUsernameError" prefHeight="17.0" prefWidth="328.0" textFill="RED" />
+                                <Label layoutX="10.0" layoutY="10.0" text="Password" />
+                                <PasswordField fx:id="studentPassword" layoutX="70.0" layoutY="124.0" prefHeight="36.0" prefWidth="310.0" promptText="Enter Password" />
+                                <Label fx:id="studentPasswordError" prefHeight="17.0" prefWidth="328.0" textFill="RED" />
+                                <Button fx:id="studentLoginButton" defaultButton="true" prefHeight="25.0" prefWidth="126.0" text="Login">
+                                    <VBox.margin>
+                                        <Insets top="15.0" />
+                                    </VBox.margin>
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                </Button>
+                                <Label text="Not registered? No Problem. " />
+                                <Hyperlink text="Register Student" />
+                            </children>
+                            <padding>
+                                <Insets left="60.0" right="60.0" top="30.0" />
+                            </padding>
+                        </VBox>
+                    </content>
+                </Tab>
+                <Tab id="teacherTab" text="Teacher">
+                    <content>
+                        <VBox prefHeight="360.0" prefWidth="430.0" spacing="10.0">
+                            <children>
+                                <Label alignment="CENTER" prefHeight="35.0" prefWidth="306.0" text="Teacher Login">
+                                    <padding>
+                                        <Insets bottom="10.0" top="10.0" />
+                                    </padding>
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Label>
+                                <Label layoutX="10.0" text="Teacher Username" />
+                                <TextField fx:id="teacherUsername" prefHeight="36.0" prefWidth="310.0" promptText="Enter Username" />
+                                <Label fx:id="teacherUsernameError" prefHeight="17.0" prefWidth="328.0" textFill="RED" />
+                                <Label layoutX="10.0" layoutY="10.0" text="Password" />
+                                <PasswordField fx:id="teacherPassword" layoutX="70.0" layoutY="124.0" prefHeight="36.0" prefWidth="310.0" promptText="Enter Password" />
+                                <Label fx:id="teacherPasswordError" prefHeight="17.0" prefWidth="328.0" textFill="RED" />
+                                <Button defaultButton="true" prefHeight="25.0" prefWidth="126.0" text="Login">
+                                    <VBox.margin>
+                                        <Insets top="15.0" />
+                                    </VBox.margin>
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                </Button>
+                                <Label text="Not registered? No Problem. " />
+                                <Hyperlink text="Register Teacher" />
+                            </children>
+                            <padding>
+                                <Insets left="60.0" right="60.0" top="30.0" />
+                            </padding>
+                        </VBox>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </center>
+</BorderPane>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="514.0" prefWidth="748.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.TeacherDashboard">
+   <center>
+      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+        <tabs>
+          <Tab fx:id="coursesTab" text="Courses">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <VBox layoutX="-32.0" layoutY="22.0" prefHeight="371.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <TableView fx:id="courseTable">
+                                <columns>
+                                  <TableColumn fx:id="id" prefWidth="75.0" text="Course ID" />
+                                  <TableColumn fx:id="title" prefWidth="353.0" text="Course Title" />
+                                    <TableColumn fx:id="students" minWidth="8.0" prefWidth="119.0" text="Number of Students" />
+                                    <TableColumn fx:id="courseUrl" minWidth="8.0" prefWidth="223.0" text="Path to Course" />
+                                </columns>
+                              </TableView>
+                              <VBox>
+                                 <children>
+                                    <ButtonBar prefHeight="91.0" prefWidth="600.0">
+                                      <buttons>
+                                          <TextField fx:id="addCourseField" prefHeight="25.0" prefWidth="315.0" promptText="Course Title" />
+                                        <Button fx:id="addCourseButton" mnemonicParsing="false" onAction="#handleAddCourse" prefHeight="25.0" text="Add Course" />
+                                          <Button fx:id="okayButton" mnemonicParsing="false" onAction="#handleOkayButton" prefHeight="25.0" text="Ok" />
+                                      </buttons>
+                                       <padding>
+                                          <Insets right="20.0" top="20.0" />
+                                       </padding>
+                                    </ButtonBar>
+                                    <HBox>
+                                       <VBox.margin>
+                                          <Insets left="20.0" />
+                                       </VBox.margin>
+                                       <children>
+                                          <Label fx:id="addCourseErrorMessage" prefHeight="17.0" prefWidth="301.0" textFill="#eb0d0d">
+                                             <font>
+                                                <Font name="System Italic" size="12.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="fileName" layoutX="10.0" layoutY="10.0" prefHeight="17.0" prefWidth="228.0" textFill="#2738f2">
+                                             <font>
+                                                <Font name="System Italic" size="12.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <Button fx:id="logoutButton" cancelButton="true" mnemonicParsing="false" onAction="#handleLogoutButton" prefHeight="25.0" prefWidth="113.0" text="Logout">
+                                       <VBox.margin>
+                                          <Insets left="20.0" />
+                                       </VBox.margin>
+                                    </Button>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab fx:id="studentsTab" text="Students">
+               <content>
+                  <VBox prefHeight="200.0" prefWidth="100.0" />
+               </content>
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <VBox layoutX="-32.0" layoutY="22.0" prefHeight="371.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <TableView fx:id="studentTable">
+                                 <columns>
+                                    <TableColumn fx:id="studentId" prefWidth="75.0" text="Student ID" />
+                                    <TableColumn fx:id="studentName" prefWidth="353.0" text="Student Name" />
+                                    <TableColumn fx:id="studentUsername" minWidth="8.0" prefWidth="119.0" text="Username" />
+                                    <TableColumn fx:id="studentCourses" minWidth="8.0" prefWidth="223.0" text="Courses" />
+                                 </columns>
+                              </TableView>
+                              <VBox>
+                                 <children>
+                                    <Label alignment="CENTER" prefHeight="17.0" prefWidth="724.0" text="Select Course to Add to Student">
+                                       <VBox.margin>
+                                          <Insets left="20.0" right="20.0" />
+                                       </VBox.margin>
+                                       <font>
+                                          <Font size="17.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets top="20.0" />
+                                       </padding>
+                                    </Label>
+                                    <ButtonBar prefHeight="91.0" prefWidth="600.0">
+                                       <buttons>
+                                          <ComboBox fx:id="courseComboBox" prefHeight="25.0" prefWidth="380.0" value="Select Course">
+                                              <items>
+                                                  <FXCollections fx:factory="observableArrayList">
+                                                      <String fx:value="Select Course" />
+                                                  </FXCollections>
+                                              </items>
+                                          </ComboBox>
+                                          <ComboBox fx:id="studentComboBox" layoutX="30.0" layoutY="10.0" prefHeight="25.0" prefWidth="380.0" value="Select Student">
+                                             <items>
+                                                <FXCollections fx:factory="observableArrayList">
+                                                   <String fx:value="Select Student" />
+                                                </FXCollections>
+                                             </items>
+                                          </ComboBox>
+                                          <Button fx:id="addStudentToCourse" mnemonicParsing="false" onAction="#addStudentToCourse" prefHeight="25.0" text="Add Student to Course" />
+                                       </buttons>
+                                       <padding>
+                                          <Insets right="20.0" top="20.0" />
+                                       </padding>
+                                    </ButtonBar>
+                                    <HBox spacing="10.0">
+                                       <VBox.margin>
+                                          <Insets left="20.0" />
+                                       </VBox.margin>
+                                       <children>
+                                          <Label fx:id="assignCourseErrorMessage" prefHeight="17.0" prefWidth="229.0" textFill="#eb0d0d">
+                                             <font>
+                                                <Font name="System Italic" size="12.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="assignStudentErrorMessage" layoutX="10.0" layoutY="10.0" prefHeight="17.0" prefWidth="228.0" textFill="#e83617">
+                                             <font>
+                                                <Font name="System Italic" size="12.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+               </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </center>
+   <padding>
+      <Insets bottom="20.0" />
+   </padding>
+</BorderPane>

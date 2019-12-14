@@ -22,6 +22,13 @@ public class Person {
         this.password = password;
     }
 
+    public Person (int id, String name, String username) {
+        this.id = id;
+        this.name = name;
+        this.username = username;
+    }
+
+
     public void setId (int id) {
         this.id = id;
     }
