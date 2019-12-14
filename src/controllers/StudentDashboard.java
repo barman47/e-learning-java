@@ -61,6 +61,7 @@ public class StudentDashboard {
             courseDataStore.open();
             Course course = courseDataStore.findCourse(courseTitle);
             if (course != null) {
+                // Open PDF File here
 //                File courseFile = new File(course.getCourseUrl());
 //                HostServices hostServices = getHostServices();
 //                hostServices.showDocument(course.getCourseUrl());
