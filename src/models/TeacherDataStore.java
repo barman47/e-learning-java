@@ -1,29 +1,31 @@
-package classes;
+package models;
 
 import javafx.scene.control.Alert;
 import sample.CustomAlert;
 
 import java.sql.*;
 
-public class AdminDataStore {
+public class TeacherDataStore {
     public static final String DB_NAME = "elearning.db";
     public static final String CONNECTION_STRING = "jdbc:sqlite:C:\\databases\\" + DB_NAME;
 
-    // Admin Database
-    public static final String TABLE_ADMIN = "admins";
-    public static final String COLUMN_ADMIN_ID = "id";
-    public static final String COLUMN_ADMIN_NAME = "name";
-    public static final String COLUMN_ADMIN_USERNAME = "username";
-    public static final String COLUMN_ADMIN_PASSWORD = "password";
-    public static final String CREATE_ADMIN_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_ADMIN  +
-            " (" + COLUMN_ADMIN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            COLUMN_ADMIN_NAME + " TEXT NOT NULL, " +
-            COLUMN_ADMIN_USERNAME + " TEXT NOT NULL, " +
-            COLUMN_ADMIN_PASSWORD + " TEXT NOT NULL);";
-    // Create admin
-    public static final String INSERT_ADMIN = "INSERT INTO " + TABLE_ADMIN + "(" + COLUMN_ADMIN_NAME + ", " +
-            COLUMN_ADMIN_USERNAME + "," + COLUMN_ADMIN_PASSWORD + ") VALUES(?, ?, ?)";
-    private static final String FIND_ADMIN = "SELECT *  FROM " + TABLE_ADMIN + " WHERE " + COLUMN_ADMIN_USERNAME + " = ?;";
+    // Teacher Database
+    public static final String TABLE_TEACHER = "teachers";
+    public static final String COLUMN_TEACHER_ID = "id";
+    public static final String COLUMN_COURSE_ID = "course_id";
+    public static final String COLUMN_TEACHER_NAME = "name";
+    public static final String COLUMN_TEACHER_USERNAME = "username";
+    public static final String COLUMN_TEACHER_PASSWORD = "password";
+    public static final String CREATE_TEACHER_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_TEACHER  +
+            " (" + COLUMN_TEACHER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            COLUMN_COURSE_ID + " INTEGER, " +
+            COLUMN_TEACHER_NAME + " TEXT NOT NULL, " +
+            COLUMN_TEACHER_USERNAME + " TEXT NOT NULL, " +
+            COLUMN_TEACHER_PASSWORD + " TEXT NOT NULL);";
+    // Create teacher
+    public static final String INSERT_TEACHER = "INSERT INTO " + TABLE_TEACHER + "(" + COLUMN_TEACHER_NAME + ", " +
+            COLUMN_TEACHER_USERNAME + "," + COLUMN_TEACHER_PASSWORD + ") VALUES(?, ?, ?)";
+    private static final String FIND_TEACHER = "SELECT *  FROM " + TABLE_TEACHER + " WHERE " + COLUMN_TEACHER_USERNAME + " = ?;";
 
     // TEACHER DATABASE
 //    public static final String TABLE_TEACHER = "teachers";
@@ -33,16 +35,16 @@ public class AdminDataStore {
     private Statement statement;
     private ResultSet resultSet;
 
-    private PreparedStatement insertAdmin;
-    private PreparedStatement findAdmin;
+    private PreparedStatement insertTeacher;
+    private PreparedStatement findTeacher;
 
     public boolean open () {
         try {
             conn = DriverManager.getConnection(CONNECTION_STRING);
-            // creating the admin table
-            createAdminTable(); // Must come before insert, otherwise there may be no table to insert into
-            findAdmin = conn.prepareStatement(FIND_ADMIN);
-            insertAdmin = conn.prepareStatement(INSERT_ADMIN);
+            // creating the teacher table
+            createTeacherTable(); // Must come before insert, otherwise there may be no table to insert into
+            findTeacher = conn.prepareStatement(FIND_TEACHER);
+            insertTeacher = conn.prepareStatement(INSERT_TEACHER);
             return true;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -119,73 +121,73 @@ public class AdminDataStore {
         }
     }
 
-    private void createAdminTable () {
+    private void createTeacherTable () {
         try {
             statement = conn.createStatement();
-            statement.execute(CREATE_ADMIN_TABLE);
+            statement.execute(CREATE_TEACHER_TABLE);
         } catch (SQLException ex) {
-            CustomAlert.showAlert(Alert.AlertType.ERROR, "Error", "ERROR CREATING ADMIN TABLE", "Please try again!");
+            CustomAlert.showAlert(Alert.AlertType.ERROR, "Error", "ERROR CREATING TEACHER TABLE", "Please try again!");
         }
     }
 
-    public String insertAdmin (String name, String username, String password){
+    public String insertTeacher (String name, String username, String password){
         String returnMessage = "";
         try {
-            boolean adminExists = findAdmin(username);
-            if (adminExists) {
+            boolean teacherExists = findTeacher(username);
+            if (teacherExists) {
                 returnMessage = "Username exists!";
             } else {
                 open();
-                insertAdmin.setString(1, name);
-                insertAdmin.setString(2, username);
-                insertAdmin.setString(3, password);
-                insertAdmin.execute();
+                insertTeacher.setString(1, name);
+                insertTeacher.setString(2, username);
+                insertTeacher.setString(3, password);
+                insertTeacher.execute();
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            CustomAlert.showAlert(Alert.AlertType.ERROR, "Error", "ERROR INSERTING ADMIN", "Please try again!");
+            CustomAlert.showAlert(Alert.AlertType.ERROR, "Error", "ERROR INSERTING TEACHER", "Please try again!");
         }
 
         return returnMessage;
     }
 
-    public boolean findAdmin (String username) {
-        boolean admin = false;
+    public boolean findTeacher (String username) {
+        boolean teacher = false;
         ResultSet resultSet = null;
         try {
-            findAdmin.setString(1, username);
-            resultSet = findAdmin.executeQuery();
+            findTeacher.setString(1, username);
+            resultSet = findTeacher.executeQuery();
             if (resultSet.next()) {
-                admin = true;
+                teacher = true;
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
             CustomAlert.showAlert(Alert.AlertType.ERROR, "Error", "ERROR EXECUTING QUERY", "Please try again!");
         } finally {
-            close(conn, findAdmin, resultSet);
+            close(conn, findTeacher, resultSet);
         }
-        return admin;
+        return teacher;
     }
 
-    public Admin loginAdmin (String username, String password) {
-        Admin admin = null;
+    public Teacher loginTeacher (String username, String password) {
+        Teacher teacher = null;
 
         try {
-            findAdmin.setString(1, username);
-            resultSet = findAdmin.executeQuery();
+            findTeacher.setString(1, username);
+            resultSet = findTeacher.executeQuery();
             if (resultSet.next()) {
-                admin = new Admin(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("username"), resultSet.getString("password"));
-                if (!password.equals(admin.getPassword())) {
-                    CustomAlert.showAlert(Alert.AlertType.WARNING, "Password Incorrect", "INCORRECT ADMIN PASSWORD!", "The Password provided is incorrect");
+                teacher = new Teacher(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("username"), resultSet.getString("password"));
+                if (!password.equals(teacher.getPassword())) {
+                    CustomAlert.showAlert(Alert.AlertType.WARNING, "Password Incorrect", "INCORRECT TEACHER PASSWORD!", "The Password provided is incorrect");
                 }
             } else {
-                CustomAlert.showAlert(Alert.AlertType.WARNING, "Admin not Found", "ADMIN DOES NOT EXIST!", "Admin username does not exist");
+                CustomAlert.showAlert(Alert.AlertType.WARNING, "Teacher not Found", "TEACHER DOES NOT EXIST!", "Teacher username does not exist");
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
         } finally {
             close(conn, statement, resultSet);
         }
-        return admin;
+        return teacher;
     }
 }

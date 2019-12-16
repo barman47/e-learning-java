@@ -1,136 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Hyperlink?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AdminDashboard">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="514.0" prefWidth="748.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AdminDashboard">
     <center>
-        <TabPane tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+        <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
             <tabs>
-                <Tab id="adminTab" text="Admin">
+                <Tab fx:id="coursesTab" text="Courses">
                     <content>
-                        <VBox prefHeight="360.0" prefWidth="430.0" spacing="10.0">
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
-                                <Label alignment="CENTER" prefHeight="35.0" prefWidth="306.0" text="Admin Dashboard">
-                                    <padding>
-                                        <Insets bottom="10.0" top="10.0" />
-                                    </padding>
-                                    <font>
-                                        <Font size="18.0" />
-                                    </font>
-                                </Label>
-                                <Label layoutX="10.0" text="Admin Username" />
-                                <TextField fx:id="adminUsername" prefHeight="36.0" prefWidth="310.0" promptText="Enter Username" />
-                                <Label fx:id="adminUsernameError" prefHeight="17.0" prefWidth="328.0" textFill="RED">
-                                    <VBox.margin>
-                                        <Insets top="-10.0" />
-                                    </VBox.margin>
-                                </Label>
-                                <Label layoutX="10.0" layoutY="10.0" text="Password" />
-                                <PasswordField fx:id="adminPassword" layoutX="70.0" layoutY="124.0" prefHeight="36.0" prefWidth="310.0" promptText="Enter Password" />
-                                <Label fx:id="adminPasswordError" layoutX="70.0" layoutY="170.0" prefHeight="17.0" prefWidth="328.0" textFill="RED">
-                                    <VBox.margin>
-                                        <Insets top="-10.0" />
-                                    </VBox.margin>
-                                </Label>
-                                <Button fx:id="adminLoginButton" defaultButton="true" prefHeight="25.0" prefWidth="126.0" text="Login">
-                                    <VBox.margin>
-                                        <Insets top="15.0" />
-                                    </VBox.margin>
-                                    <cursor>
-                                        <Cursor fx:constant="HAND" />
-                                    </cursor>
-                                </Button>
-                                <Label text="Not registered? No Problem. " />
-                                <Hyperlink id="a" fx:id="registerAdminLink" text="Register Admin" />
+                                <VBox layoutX="-32.0" layoutY="22.0" prefHeight="371.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <children>
+                                        <TableView fx:id="courseTable">
+                                            <columns>
+                                                <TableColumn fx:id="id" editable="false" prefWidth="75.0" text="Course ID" />
+                                                <TableColumn fx:id="title" editable="false" onEditCommit="#onCourseEditChange" prefWidth="353.0" text="Course Title" />
+                                                <TableColumn fx:id="students" editable="false" minWidth="8.0" onEditCommit="#onCourseEditChange" prefWidth="119.0" text="Number of Students" />
+                                                <TableColumn fx:id="courseUrl" editable="false" minWidth="8.0" onEditCommit="#onCourseEditChange" prefWidth="223.0" text="Path to Course" />
+                                            </columns>
+                                        </TableView>
+                              <HBox spacing="20.0">
+                                 <children>
+                                                <Button fx:id="logoutButton" cancelButton="true" lineSpacing="20.0" mnemonicParsing="false" onAction="#handleLogoutButton" prefHeight="25.0" prefWidth="113.0" text="Update Course" />
+                                    <Button cancelButton="true" mnemonicParsing="false" onAction="#handleLogoutButton" prefHeight="25.0" prefWidth="113.0" text="Logout" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="20.0" left="20.0" top="20.0" />
+                                 </padding>
+                              </HBox>
+                                    </children>
+                                </VBox>
                             </children>
-                            <padding>
-                                <Insets left="60.0" right="60.0" top="30.0" />
-                            </padding>
-                        </VBox>
+                        </AnchorPane>
                     </content>
                 </Tab>
-                <Tab id="studentTab" text="Student">
+                <Tab fx:id="studentsTab" text="Students">
                     <content>
-                        <VBox spacing="10.0">
-                            <children>
-                                <Label alignment="CENTER" prefHeight="35.0" prefWidth="306.0" text="Student Login">
-                                    <padding>
-                                        <Insets bottom="10.0" top="10.0" />
-                                    </padding>
-                                    <font>
-                                        <Font size="18.0" />
-                                    </font>
-                                </Label>
-                                <Label layoutX="10.0" text="Student Username" />
-                                <TextField fx:id="studentUsername" prefHeight="36.0" prefWidth="310.0" promptText="Enter Username" />
-                                <Label fx:id="studentUsernameError" prefHeight="17.0" prefWidth="328.0" textFill="RED" />
-                                <Label layoutX="10.0" layoutY="10.0" text="Password" />
-                                <PasswordField fx:id="studentPassword" layoutX="70.0" layoutY="124.0" prefHeight="36.0" prefWidth="310.0" promptText="Enter Password" />
-                                <Label fx:id="studentPasswordError" prefHeight="17.0" prefWidth="328.0" textFill="RED" />
-                                <Button fx:id="studentLoginButton" defaultButton="true" prefHeight="25.0" prefWidth="126.0" text="Login">
-                                    <VBox.margin>
-                                        <Insets top="15.0" />
-                                    </VBox.margin>
-                                    <cursor>
-                                        <Cursor fx:constant="HAND" />
-                                    </cursor>
-                                </Button>
-                                <Label text="Not registered? No Problem. " />
-                                <Hyperlink text="Register Student" />
-                            </children>
-                            <padding>
-                                <Insets left="60.0" right="60.0" top="30.0" />
-                            </padding>
-                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0" />
                     </content>
-                </Tab>
-                <Tab id="teacherTab" text="Teacher">
                     <content>
-                        <VBox prefHeight="360.0" prefWidth="430.0" spacing="10.0">
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
-                                <Label alignment="CENTER" prefHeight="35.0" prefWidth="306.0" text="Teacher Login">
-                                    <padding>
-                                        <Insets bottom="10.0" top="10.0" />
-                                    </padding>
-                                    <font>
-                                        <Font size="18.0" />
-                                    </font>
-                                </Label>
-                                <Label layoutX="10.0" text="Teacher Username" />
-                                <TextField fx:id="teacherUsername" prefHeight="36.0" prefWidth="310.0" promptText="Enter Username" />
-                                <Label fx:id="teacherUsernameError" prefHeight="17.0" prefWidth="328.0" textFill="RED" />
-                                <Label layoutX="10.0" layoutY="10.0" text="Password" />
-                                <PasswordField fx:id="teacherPassword" layoutX="70.0" layoutY="124.0" prefHeight="36.0" prefWidth="310.0" promptText="Enter Password" />
-                                <Label fx:id="teacherPasswordError" prefHeight="17.0" prefWidth="328.0" textFill="RED" />
-                                <Button defaultButton="true" prefHeight="25.0" prefWidth="126.0" text="Login">
-                                    <VBox.margin>
-                                        <Insets top="15.0" />
-                                    </VBox.margin>
-                                    <cursor>
-                                        <Cursor fx:constant="HAND" />
-                                    </cursor>
-                                </Button>
-                                <Label text="Not registered? No Problem. " />
-                                <Hyperlink text="Register Teacher" />
+                                <VBox layoutX="-32.0" layoutY="22.0" prefHeight="371.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <children>
+                                        <TableView fx:id="studentTable" editable="true">
+                                            <columns>
+                                                <TableColumn fx:id="studentId" prefWidth="67.0" text="Student ID" />
+                                                <TableColumn fx:id="studentName" onEditCommit="#onStudentEditChange" prefWidth="325.0" text="Student Name" />
+                                                <TableColumn fx:id="studentUsername" minWidth="8.0" onEditCommit="#onStudentEditChange" prefWidth="189.0" text="Username" />
+                                    <TableColumn fx:id="studentPassword" onEditCommit="#onStudentEditChange" prefWidth="166.0" text="Password" />
+                                            </columns>
+                                        </TableView>
+                              <HBox spacing="20.0">
+                                 <children>
+                                    <Button fx:id="upDateStudent" mnemonicParsing="false" onAction="#handleUpdateStudent" text="Update Student" />
+                                    <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleLogoutButton" prefHeight="25.0" prefWidth="102.0" text="Logout" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="20.0" top="20.0" />
+                                 </padding>
+                              </HBox>
+                                    </children>
+                                </VBox>
                             </children>
-                            <padding>
-                                <Insets left="60.0" right="60.0" top="30.0" />
-                            </padding>
-                        </VBox>
+                        </AnchorPane>
                     </content>
                 </Tab>
             </tabs>
         </TabPane>
     </center>
+    <padding>
+        <Insets bottom="20.0" />
+    </padding>
 </BorderPane>

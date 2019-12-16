@@ -1,7 +1,9 @@
-package classes;
+package models;
 
-public class Student extends Person {
+public class Student extends User {
     private String courses;
+
+    public Student () {}
 
     public Student ( String name, String username, String password) {
         super(name, username, password);

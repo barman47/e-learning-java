@@ -1,7 +1,6 @@
 package sample;
 
-import classes.*;
-import controllers.StudentDashboard;
+import models.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -14,6 +13,7 @@ import javafx.event.ActionEvent;
 import java.io.IOException;
 
 public class HomeController {
+
     // Admin login controls
     @FXML
     private TextField adminUsername;
@@ -27,11 +27,6 @@ public class HomeController {
     @FXML
     private Label adminPasswordError;
 
-    @FXML
-    private Hyperlink registerAdminLink;
-
-    @FXML
-    private Button adminLoginButton;
 
     // Teacher login controls
     @FXML
@@ -64,12 +59,6 @@ public class HomeController {
 
     @FXML
     private Label studentPasswordError;
-
-    @FXML
-    private Hyperlink registerStudentLink;
-
-    @FXML
-    private Button studentLoginButton;
 
     @FXML
     public void handleAdminLogin (ActionEvent e) throws IOException {
@@ -300,7 +289,7 @@ public class HomeController {
         switch (useCase) {
             case "admin":
                 root = FXMLLoader.load(getClass().getResource("../views/adminDashboard.fxml"));
-                loginScene = new Scene(root, 663, 467);
+                loginScene = new Scene(root, 800, 600);
                 loginStage = (Stage) ((Node)e.getSource()).getScene().getWindow();
                 loginStage.hide();
                 Stage adminRegisterStage = loginStage;
@@ -326,7 +315,7 @@ public class HomeController {
 
             case "teacher":
                 root = FXMLLoader.load(getClass().getResource("../views/teacherDashboard.fxml"));
-                loginScene = new Scene(root, 800, 467);
+                loginScene = new Scene(root, 800, 600);
                 loginStage = (Stage) ((Node)e.getSource()).getScene().getWindow();
                 loginStage.hide();
                 Stage teacherRegisterStage = loginStage;

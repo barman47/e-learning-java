@@ -1,8 +1,7 @@
 package controllers;
 
-import classes.Course;
-import classes.CourseDataStore;
-import javafx.application.Application;
+import models.Course;
+import models.CourseDataStore;
 import javafx.application.HostServices;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,12 +21,16 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sample.CustomAlert;
+import sample.HomeController;
+import sample.Main;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class StudentDashboard {
+public class StudentDashboard extends HomeController {
+    HostServices hostServices;
+
     @FXML
     private ListView courseList;
 
@@ -54,17 +57,23 @@ public class StudentDashboard {
     }
 
     @FXML
-    public void handleOpenCourse () {
+    public void handleOpenCourse () throws IOException {
         try {
             String courseTitle = courseList.getSelectionModel().getSelectedItem().toString();
             CourseDataStore courseDataStore = new CourseDataStore();
             courseDataStore.open();
-            Course course = courseDataStore.findCourse(courseTitle);
+
+            Course dataStoreCourse = courseDataStore.findCourse(courseTitle);
+            Course course = new Course();
+            course.setCourseUrl(dataStoreCourse.getCourseUrl());
             if (course != null) {
                 // Open PDF File here
-//                File courseFile = new File(course.getCourseUrl());
-//                HostServices hostServices = getHostServices();
-//                hostServices.showDocument(course.getCourseUrl());
+                File courseFile = new File(course.getCourseUrl());
+
+                //The main class holds an instance of the HostServices
+                Main main = new Main();
+                HostServices hostServices = main.returnHostServices(); // getting a reference to the host services class from the Main class constructor
+                hostServices.showDocument(courseFile.getAbsolutePath());
 
             }
         } catch (NullPointerException ex) {

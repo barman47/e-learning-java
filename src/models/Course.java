@@ -1,6 +1,4 @@
-package classes;
-
-import java.util.ArrayList;
+package models;
 
 public class Course {
     private int id;

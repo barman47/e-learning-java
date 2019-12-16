@@ -1,7 +1,5 @@
-package classes;
+package models;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import sample.CustomAlert;
 
@@ -159,16 +157,11 @@ public class CourseDataStore {
         try {
             findCourse.setString(1, courseTitle);
             resultSet = findCourse.executeQuery();
-            if (resultSet.next()) {
-                while (resultSet.next()) {
-                    course.setId(resultSet.getInt("id"));
-                    course.setCourseUrl(resultSet.getString("url"));
-                    course.setTitle(resultSet.getString("title"));
-                    break;
-                }
-            } else {
-                CustomAlert.showAlert(Alert.AlertType.INFORMATION, "Course not Found", "Course Does not Exist!", "Please try again!");
-                course = null;
+            while (resultSet.next()) {
+                course.setId(resultSet.getInt("id"));
+                course.setCourseUrl(resultSet.getString("url"));
+                course.setTitle(resultSet.getString("title"));
+                break;
             }
         } catch (SQLException ex) {
             ex.printStackTrace();

@@ -1,4 +1,4 @@
-package classes;
+package models;
 
 import javafx.scene.control.Alert;
 import sample.CustomAlert;
@@ -30,6 +30,10 @@ public class StudentDataStore {
 
     private static final String FIND_STUDENTS = "SELECT * FROM " + TABLE_STUDENT + ";";
 
+    private static final String UPDATE_STUDENT = "UPDATE " + TABLE_STUDENT + " SET " + COLUMN_STUDENT_NAME + " = ?, " +
+            COLUMN_STUDENT_USERNAME + " = ?, " + COLUMN_STUDENT_PASSWORD + " = ? " +
+            "WHERE " + COLUMN_STUDENT_ID +  " = ?;";
+
     // TEACHER DATABASE
 //    public static final String TABLE_TEACHER = "teachers";
 //    public static final String
@@ -40,6 +44,7 @@ public class StudentDataStore {
 
     private PreparedStatement insertStudent;
     private PreparedStatement findStudent;
+    private PreparedStatement updateStudent;
 
     public boolean open () {
         try {
@@ -48,6 +53,7 @@ public class StudentDataStore {
             createStudentTable(); // Must come before insert, otherwise there may be no table to insert into
             findStudent = conn.prepareStatement(FIND_STUDENT);
             insertStudent = conn.prepareStatement(INSERT_STUDENT);
+            updateStudent = conn.prepareStatement(UPDATE_STUDENT);
             return true;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -210,5 +216,23 @@ public class StudentDataStore {
             close(conn, statement, resultSet);
         }
         return students;
+    }
+
+    public boolean updateStudent (int id, String name, String username, String password){
+        boolean isQuerySuccessful = true;
+        try{
+            updateStudent.setString(1, name);
+            updateStudent.setString(2, username);
+            updateStudent.setString(3, password);
+            updateStudent.setInt(4, id);
+            updateStudent.execute();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            CustomAlert.showAlert(Alert.AlertType.ERROR, "Error", "ERROR UPDATING STUDENT", "Please try again!");
+            isQuerySuccessful = false;
+        }
+
+        return isQuerySuccessful;
     }
 }

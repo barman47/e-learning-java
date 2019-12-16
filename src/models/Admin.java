@@ -1,6 +1,6 @@
-package classes;
+package models;
 
-public class Admin extends Person {
+public class Admin extends User {
     public Admin () {
         super();
     }

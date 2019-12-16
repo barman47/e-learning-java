@@ -1,7 +1,7 @@
 package controllers;
 
-import classes.Student;
-import classes.StudentDataStore;
+import models.Student;
+import models.StudentDataStore;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

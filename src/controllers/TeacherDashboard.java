@@ -1,9 +1,9 @@
 package controllers;
 
-import classes.Course;
-import classes.CourseDataStore;
-import classes.Student;
-import classes.StudentDataStore;
+import models.Course;
+import models.CourseDataStore;
+import models.Student;
+import models.StudentDataStore;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -184,6 +184,9 @@ public class TeacherDashboard {
     private void clearCourseTable () {
         courses.clear();
     }
+
+    @FXML
+    public void addStudentToCourse () {}
 
     @FXML
     public void handleLogoutButton(ActionEvent e){

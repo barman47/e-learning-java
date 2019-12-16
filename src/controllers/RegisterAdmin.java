@@ -1,7 +1,7 @@
 package controllers;
 
-import classes.AdminDataStore;
-import classes.Admin;
+import models.AdminDataStore;
+import models.Admin;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

@@ -1,28 +1,28 @@
-package classes;
+package models;
 
-public class Person {
+public class User {
     private int id;
     private String name;
     private String username;
     private String password;
 
-    public Person () {
+    public User() {
     }
 
-    public Person (String name, String username, String password) {
+    public User(String name, String username, String password) {
         this.name = name;
         this.username = username;
         this.password = password;
     }
 
-    public Person (int id, String name, String username, String password) {
+    public User(int id, String name, String username, String password) {
         this.id = id;
         this.name = name;
         this.username = username;
         this.password = password;
     }
 
-    public Person (int id, String name, String username) {
+    public User(int id, String name, String username) {
         this.id = id;
         this.name = name;
         this.username = username;

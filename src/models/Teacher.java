@@ -1,8 +1,8 @@
-package classes;
+package models;
 
 import java.util.ArrayList;
 
-public class Teacher extends Person {
+public class Teacher extends User {
     private ArrayList<Course> courses;
 
     public Teacher (int id, String name, String username, String password) {
