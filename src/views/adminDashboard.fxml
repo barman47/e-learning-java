@@ -31,7 +31,7 @@
                                         </TableView>
                               <HBox spacing="20.0">
                                  <children>
-                                                <Button fx:id="logoutButton" cancelButton="true" lineSpacing="20.0" mnemonicParsing="false" onAction="#handleLogoutButton" prefHeight="25.0" prefWidth="113.0" text="Update Course" />
+                                                <Button fx:id="logoutButton" cancelButton="true" lineSpacing="20.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="113.0" text="Update Course" />
                                     <Button cancelButton="true" mnemonicParsing="false" onAction="#handleLogoutButton" prefHeight="25.0" prefWidth="113.0" text="Logout" />
                                  </children>
                                  <padding>
