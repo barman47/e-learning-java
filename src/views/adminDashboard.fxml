@@ -56,9 +56,9 @@
                                         <TableView fx:id="studentTable" editable="true">
                                             <columns>
                                                 <TableColumn fx:id="studentId" prefWidth="67.0" text="Student ID" />
-                                                <TableColumn fx:id="studentName" onEditCommit="#onStudentEditChange" prefWidth="325.0" text="Student Name" />
-                                                <TableColumn fx:id="studentUsername" minWidth="8.0" onEditCommit="#onStudentEditChange" prefWidth="189.0" text="Username" />
-                                    <TableColumn fx:id="studentPassword" onEditCommit="#onStudentEditChange" prefWidth="166.0" text="Password" />
+                                                <TableColumn fx:id="studentName" onEditCommit="#onStudentNameEditChange" prefWidth="325.0" text="Student Name" />
+                                                <TableColumn fx:id="studentUsername" minWidth="8.0" onEditCommit="#onStudentUsernameEditChange" prefWidth="189.0" text="Username" />
+                                    <TableColumn fx:id="studentPassword" onEditCommit="#onStudentPasswordEditChange" prefWidth="166.0" text="Password" />
                                             </columns>
                                         </TableView>
                               <HBox spacing="20.0">

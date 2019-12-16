@@ -219,6 +219,10 @@ public class StudentDataStore {
     }
 
     public boolean updateStudent (int id, String name, String username, String password){
+        System.out.println(name);
+        System.out.println(username);
+        System.out.println(password);
+        System.out.println(id);
         boolean isQuerySuccessful = true;
         try{
             updateStudent.setString(1, name);

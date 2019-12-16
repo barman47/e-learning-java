@@ -182,6 +182,7 @@ public class AdminDashboard {
         } catch (NullPointerException ex) {
             CustomAlert.showAlert(Alert.AlertType.ERROR, "INVALID STUDENT", "NO STUDENT SELECTED!", "Please Select a Student to Update");
         } finally {
+            clearStudentTable();
             loadStudentTable();
         }
     }
@@ -194,30 +195,42 @@ public class AdminDashboard {
         studentPassword.setCellFactory(TextFieldTableCell.forTableColumn());
     }
 
-    public void onStudentEditChange(TableColumn.CellEditEvent<Student, String> studentStringCellEditEvent) {
+    public void onStudentNameEditChange(TableColumn.CellEditEvent<Student, String> studentStringCellEditEvent) {
         Student student = studentTable.getSelectionModel().getSelectedItem();
         student.setName(studentStringCellEditEvent.getNewValue());
+    }
+
+    public void onStudentPasswordEditChange(TableColumn.CellEditEvent<Student, String> studentStringCellEditEvent) {
+        Student student = studentTable.getSelectionModel().getSelectedItem();
         student.setPasword(studentStringCellEditEvent.getNewValue());
+    }
+
+    public void onStudentUsernameEditChange(TableColumn.CellEditEvent<Student, String> studentStringCellEditEvent) {
+        Student student = studentTable.getSelectionModel().getSelectedItem();
         student.setUsername(studentStringCellEditEvent.getNewValue());
     }
 
     private void setCourseTableEditable() {
-        courseTable.setEditable(true);
-        id.setEditable(false);
-        courseUrl.setCellFactory(TextFieldTableCell.forTableColumn());
-        title.setCellFactory(TextFieldTableCell.forTableColumn());
-        students.setCellFactory(TextFieldTableCell.forTableColumn());
+        studentTable.setEditable(true);
+        studentId.setEditable(false);
+        studentName.setCellFactory(TextFieldTableCell.forTableColumn());
+        studentUsername.setCellFactory(TextFieldTableCell.forTableColumn());
+        studentPassword.setCellFactory(TextFieldTableCell.forTableColumn());
     }
 
     public void onCourseEditChange(TableColumn.CellEditEvent<Course, String> courseStringCellEditEvent) {
         Course course = courseTable.getSelectionModel().getSelectedItem();
         course.setTitle(courseStringCellEditEvent.getNewValue());
-        course.setCourseUrl(courseStringCellEditEvent.getNewValue());
         course.setStudentId(courseStringCellEditEvent.getNewValue());
+        course.setCourseUrl(courseStringCellEditEvent.getNewValue());
     }
 
     private void clearCourseTable () {
         courses.clear();
+    }
+
+    private void clearStudentTable () {
+        storedStudents.clear();
     }
 
 
