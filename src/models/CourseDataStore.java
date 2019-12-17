@@ -28,6 +28,8 @@ public class CourseDataStore {
 
     private static final String FIND_COURSES = "SELECT *  FROM " + TABLE_COURSE + ";";
 
+    private static final String REMOVE_COURSE = "DELETE FROM " + TABLE_COURSE + " WHERE " + COLUMN_COURSE_TITLE + " = ?;";
+
     // TEACHER DATABASE
 //    public static final String TABLE_TEACHER = "teachers";
 //    public static final String
@@ -38,6 +40,7 @@ public class CourseDataStore {
 
     private PreparedStatement insertCourse;
     private PreparedStatement findCourse;
+    private PreparedStatement removeCourse;
 
     public boolean open () {
         try {
@@ -46,6 +49,7 @@ public class CourseDataStore {
             createCourseTable(); // Must come before insert, otherwise there may be no table to insert into
             findCourse = conn.prepareStatement(FIND_COURSE);
             insertCourse = conn.prepareStatement(INSERT_COURSE);
+            removeCourse = conn.prepareStatement(REMOVE_COURSE);
             return true;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -152,7 +156,7 @@ public class CourseDataStore {
     }
 
     public Course findCourse (String courseTitle) {
-        Course course = new Course();
+        Course course = null;
         ResultSet resultSet = null;
         try {
             findCourse.setString(1, courseTitle);
@@ -188,5 +192,19 @@ public class CourseDataStore {
             close(conn, statement, resultSet);
         }
         return courses;
+    }
+
+    public int removeCourse (String courseTitle) {
+        int deleteCount = 0;
+        try {
+            removeCourse.setString(1, courseTitle);
+            deleteCount = removeCourse.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            CustomAlert.showAlert(Alert.AlertType.ERROR, "Error", "COURSE NOT REMOVED", "Please try again!");
+        } finally {
+            close(conn, removeCourse);
+        }
+        return deleteCount;
     }
 }

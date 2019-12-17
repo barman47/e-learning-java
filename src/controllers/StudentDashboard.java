@@ -57,7 +57,7 @@ public class StudentDashboard extends HomeController {
     }
 
     @FXML
-    public void handleOpenCourse () throws IOException {
+    public void handleOpenCourse () {
         try {
             String courseTitle = courseList.getSelectionModel().getSelectedItem().toString();
             CourseDataStore courseDataStore = new CourseDataStore();

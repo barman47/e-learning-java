@@ -74,17 +74,12 @@ public class TeacherDashboard {
     @FXML
     private Label addCourseErrorMessage;
 
-    @FXML
-    private Button addCourseButton;
 
     @FXML
     private ComboBox<String> courseComboBox;
 
     @FXML
     private ComboBox<String> studentComboBox;
-
-    @FXML
-    private Button addStudentToCourse;
 
     @FXML
     public void initialize () {
@@ -132,6 +127,27 @@ public class TeacherDashboard {
                 clearCourseTable();
                 loadCourseTable();
             }
+        }
+    }
+
+    @FXML
+    public void handleRemoveCourse () {
+        try {
+            String courseTitle = courseTable.getSelectionModel().getSelectedItem().getTitle();
+            CourseDataStore courseDataStore = new CourseDataStore();
+
+            courseDataStore.open();
+            int deleteCount = courseDataStore.removeCourse(courseTitle);
+            if (deleteCount == 0) {
+                CustomAlert.showAlert(Alert.AlertType.INFORMATION, "COURSE NOT REMOVED", "No Course Removed!", "Please Try Again.");
+            } else {
+                CustomAlert.showAlert(Alert.AlertType.CONFIRMATION, "COURSE REMOVED", "SUCCESSFULLY REMOVED COURSE", "");
+            }
+            clearCourseTable();
+            loadCourseTable();
+
+        } catch (NullPointerException ex) {
+            CustomAlert.showAlert(Alert.AlertType.ERROR, "INVALID COURSE", "Please Select a Course to remove", "");
         }
     }
 

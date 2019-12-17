@@ -1,7 +1,6 @@
 package controllers;
 
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.input.KeyCode;
 import models.Course;
 import models.CourseDataStore;
 import models.Student;
@@ -77,18 +76,6 @@ public class AdminDashboard {
     private Label addCourseErrorMessage;
 
     @FXML
-    private Button addCourseButton;
-
-    @FXML
-    private ComboBox<String> courseComboBox;
-
-    @FXML
-    private ComboBox<String> studentComboBox;
-
-    @FXML
-    private Button addStudentToCourse;
-
-    @FXML
     public void initialize () {
         loadCourseTable();
         loadStudentTable();
@@ -96,6 +83,41 @@ public class AdminDashboard {
         // Making the tables editable
         setStudentTableEditable();
         setCourseTableEditable();
+    }
+
+    @FXML
+    public void handleAddCourse (ActionEvent e) {
+        FileChooser fileToUpload = new FileChooser();
+        fileToUpload.setTitle("Select a PDF File to Upload");
+        fileToUpload.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Documents", "*.pdf"));
+
+        Stage stage = (Stage) ((Node)e.getSource()).getScene().getWindow(); //Getting a reference to the currently opened stage
+
+        File selectedFile = fileToUpload.showOpenDialog(stage);
+        if (selectedFile != null) {
+            fileName.setText(selectedFile.getAbsolutePath());
+        }
+    }
+
+    @FXML
+    public void handleRemoveCourse () {
+        try {
+            String courseTitle = courseTable.getSelectionModel().getSelectedItem().getTitle();
+            CourseDataStore courseDataStore = new CourseDataStore();
+
+            courseDataStore.open();
+            int deleteCount = courseDataStore.removeCourse(courseTitle);
+            if (deleteCount == 0) {
+                CustomAlert.showAlert(Alert.AlertType.INFORMATION, "COURSE NOT REMOVED", "No Course Removed!", "Please Try Again.");
+            } else {
+                CustomAlert.showAlert(Alert.AlertType.CONFIRMATION, "COURSE REMOVED", "SUCCESSFULLY REMOVED COURSE", "");
+            }
+            clearCourseTable();
+            loadCourseTable();
+
+        } catch (NullPointerException ex) {
+            CustomAlert.showAlert(Alert.AlertType.ERROR, "INVALID COURSE", "Please Select a Course to remove", "");
+        }
     }
 
     @FXML
